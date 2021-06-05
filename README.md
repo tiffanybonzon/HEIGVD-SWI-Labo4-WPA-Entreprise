@@ -49,37 +49,71 @@ Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](
 
 > Afin de mieux filtrer les paquets de cette capture (car il y en a quand meme presque 44'000...), il faut commencer par récupérer les adresses MAC des appareils concernés par l'authentification
 >
-> STA: 30:74:96:70:df:32
+> STA (supplicant): 30:74:96:70:df:32
 >
-> AP: dc:a5:f4:60:bf:50
+> AP (authenticator): dc:a5:f4:60:bf:50
 >
 > Puis ajouter ces adresses aux filtres
 
-- Comparer [la capture](files/auth.pcap) au processus d’authentification donné en théorie (n’oubliez pas les captures d'écran pour illustrer vos comparaisons !). En particulier, identifier les étapes suivantes :
-	- Requête et réponse d’authentification système ouvert
-	
-	  ![](./images/slides_openAuth.png)
-	
-	  Nous avons ici la requête (0/1)
-	
-	  ![](./images/wireshark_openAuthReq.png)
-	
-	  Et en interchangeant les adresses source et de destination, nous obtenons la réponse (0/2)
-	
-	  ![](./images/wireshark_openAuthRes.png)
+Comparer [la capture](files/auth.pcap) au processus d’authentification donné en théorie (n’oubliez pas les captures d'écran pour illustrer vos comparaisons !). En particulier, identifier les étapes suivantes :
+- Requête et réponse d’authentification système ouvert
+
+  ![](./images/slides_openAuth.png)
+
+  Nous avons ici la requête (0/1)
+
+  ![](./images/wireshark_openAuthReq.png)
+
+  Et en interchangeant les adresses source et de destination, nous obtenons la réponse (0/2)
+
+  ![](./images/wireshark_openAuthRes.png)
+
  	- Requête et réponse d’association (ou reassociation)
-	- Négociation de la méthode d’authentification entreprise
-	- Phase d’initiation. Arrivez-vous à voir l’identité du client ?
-	- Phase hello :
-		- Version TLS
-		- Suites cryptographiques et méthodes de compression proposées par le client et acceptées par l’AP
-		- Nonces
-		- Session ID
-	- Phase de transmission de certificats
-	 	- Echanges des certificats
-		- Change cipher spec
-	- Authentification interne et transmission de la clé WPA (échange chiffré, vu comme « Application data »)
-	- 4-way handshake
+	
+	![](./images/slides_assoc.png)
+	
+	En filtrant pour obtenir les requêtes d'association ou de réassociation, nous obtenons une requête de réassociation
+	
+	![](./images/wireshark_reassocReq.png)
+	
+	Afin d'obtenir la réponse, nous filtrons afin d'obtenir une réponse de réassociation
+	
+	![](./images/wireshark_reassocRes.png)
+	
+- Négociation de la méthode d’authentification entreprise
+
+  ![](./images/wireshark_negocOverview.png)
+
+  L'AP commence par proposer à la STA d'utiliser EAP-TLS, mais les client refuse avec un `Legacy Nak` (https://datatracker.ietf.org/doc/html/rfc3748#section-5.3.1) et lui propose en retour d'utiliser EAP-PEAP
+
+  ![](./images/wireshark_negocLegacyNak.png)
+
+  L'AP va ensuite ré-envoyer une requête, mais cette fois-ci, avec le protocole EAP-PEAP
+
+- Phase d’initiation. Arrivez-vous à voir l’identité du client ?
+
+  L'Authenticator commence par demander l'identité du client
+
+  ![](./images/wireshark_identityReq.png)
+
+  Le client va ensuite répondre (einet\joel.gonin)
+
+  ![](./images/wireshark_identityRes.png)
+
+- Phase hello :
+  - Version TLS
+  - Suites cryptographiques et méthodes de compression proposées par le client et acceptées par l’AP
+  - Nonces
+  - Session ID
+
+- Phase de transmission de certificats
+
+    - Echanges des certificats
+  - Change cipher spec
+
+- Authentification interne et transmission de la clé WPA (échange chiffré, vu comme « Application data »)
+
+- 4-way handshake
 
 ### Répondez aux questions suivantes :
 
