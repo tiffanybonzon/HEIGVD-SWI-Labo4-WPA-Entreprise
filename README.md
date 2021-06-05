@@ -101,10 +101,44 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
   ![](./images/wireshark_identityRes.png)
 
 - Phase hello :
+
+  ![](./images/slides_tls.png)
+
+  ![](./images/slides_hellos.png)
+
+  Le client commence avec son message `Client Hello` dans le quel il indique, entre autres, la version TLS utilisée, les cipher suites et méthodes de compression qu'il supporte, son nonce et sa session ID. Ici le client indique qu'il supporte également la version TLS 1.2
+
+  ![](./images/wireshark_tlsClientHello.png)
+
+  Le serveur répond avec un message `Server Hello` qui contient également la version TLS utilisée, le nonce, la session ID, ainsi que la cipher suite et compression utilisée
+
+  Le paquet montré ici est reconstitués à partir des differents fragments (21498, 21502, 21508, 21512, 21517 --> Server Hello, Certificate, Server Hello Done)
+
+  ![](./images/wireshark_tlsServerHello.png)
+
   - Version TLS
+
+    - `TLS 1.0`
+
   - Suites cryptographiques et méthodes de compression proposées par le client et acceptées par l’AP
+
+    - Proposées par le client
+
+      ![](./images/wireshark_tlsCliCipherSuites.png)
+
+    - Acceptée par le serveur
+
+      ![](./images/wireshark_tlsServCipherSuite.png)
+
   - Nonces
+
+    - Client: `955bf5b716e24a729c4b60609b8ce482014ac38f1e9cb8cf2bf8fd30bf8995f1`
+    - Serveur: `003b6c2676ffd79814e56c065e5b0c39cb26600148ca1e9b3e8af83426d46e11`
+
   - Session ID
+
+    - Client: `9f1bbf1e90b88366a836db08d659f906a637ac31920e06f622762ca6c522a64f`
+    - Serveur: `ad41641ec2a7d1d5a9f6586c05703a8cbdbf6ef0053ad517f6e69b286804f5f2`
 
 - Phase de transmission de certificats
 
