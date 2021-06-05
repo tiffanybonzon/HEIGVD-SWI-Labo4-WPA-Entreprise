@@ -142,8 +142,23 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
 
 - Phase de transmission de certificats
 
+  Ici, les messages entourés en rouge ne sont pas présents car la méthode utilisée est EAP-PEAP
+
     - Echanges des certificats
+
+    ![](./images/slides_tls_certs.png)
+
+    Les certificats du serveurs sont montrés dans le paquet recomposé `Hello Server, Certificate, Hello Done`
+
+    ![](./images/wireshark_tlsServCert.png)
+
   - Change cipher spec
+
+    ![](./images/slides_tls_changeCipherSpec.png)
+
+    C'est ici le client qui reçoit ce message indiquant qu'il faut maintenant utiliser le tunnel TLS
+
+    ![](./images/wireshark_tlsChangeCipherSpec.png)
 
 - Authentification interne et transmission de la clé WPA (échange chiffré, vu comme « Application data »)
 
