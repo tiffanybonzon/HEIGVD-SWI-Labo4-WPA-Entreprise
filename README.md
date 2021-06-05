@@ -84,7 +84,7 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
 
   ![](./images/wireshark_negocOverview.png)
 
-  L'AP commence par proposer à la STA d'utiliser EAP-TLS, mais les client refuse avec un `Legacy Nak` (https://datatracker.ietf.org/doc/html/rfc3748#section-5.3.1) et lui propose en retour d'utiliser EAP-PEAP
+  L'AP commence par proposer à la STA d'utiliser EAP-TLS, mais le client refuse avec un `Legacy Nak` (https://datatracker.ietf.org/doc/html/rfc3748#section-5.3.1) et lui propose en retour d'utiliser EAP-PEAP
 
   ![](./images/wireshark_negocLegacyNak.png)
 
@@ -142,7 +142,7 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
 
 - Phase de transmission de certificats
 
-  Ici, les messages entourés en rouge ne sont pas présents car la méthode utilisée est EAP-PEAP
+  Ici, les messages entourés en rouge ne sont pas présents car la méthode utilisée est EAP-PEAP, et non EAP-TLS
 
     - Echanges des certificats
 
@@ -162,19 +162,29 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
 
 - Authentification interne et transmission de la clé WPA (échange chiffré, vu comme « Application data »)
 
+  ![](./images/slides_AuthInterne.png)
+
+  ![](./images/wireshark_tlsData.png)
+
 - 4-way handshake
+
+  ![](./images/wireshark_4wayHandshake.png)
 
 ### Répondez aux questions suivantes :
 
 > **_Question :_** Quelle ou quelles méthode(s) d’authentification est/sont proposé(s) au client ?
-> 
-> **_Réponse :_** 
+>
+> **_Réponse :_** Le client se voit proposer les méthodes EAP-TLS et EAP-PEAP. 
+>
+> L'Authenticator commence par proposer au client EAP-TLS, mais le client refuse cette méthode et indique qu'il désire utiliser EAP-PEAP. L'AP va donc lui envoyer une deuxième proposition qui est, cette fois, EAP-PEAP.
 
 ---
 
 > **_Question:_** Quelle méthode d’authentification est finalement utilisée ?
-> 
-> **_Réponse:_** 
+>
+> **_Réponse:_** La méthode utilisée est EAP-PEAP. Ceci peut être vérifié dans le message `Client Hello`
+>
+> ![](./images/answers_authMethod.png)
 
 ---
 
@@ -182,11 +192,11 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
 > 
 > - a. Le serveur envoie-t-il un certificat au client ? Pourquoi oui ou non ?
 > 
-> **_Réponse:_**
+> **_Réponse:_** Le serveur envoie son certificat afin que le client puisse l'authentifier
 > 
 > - b. Le client envoie-t-il un certificat au serveur ? Pourquoi oui ou non ?
 > 
-> **_Réponse:_**
+> **_Réponse:_** Non car la méthode d'authentification est EAP-PEAP et non EAP-TLS. EAP-PEAP utilise MSCHAPv2 pour authentifier le client grâce à un challenge-response à la place d'un certificat.
 
 ---
 
