@@ -47,8 +47,26 @@ rfkill unblock wlan
 
 Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](files/auth.pcap) avec Wireshark et fournir des captures d’écran indiquant dans chaque capture les données demandées.
 
+> Afin de mieux filtrer les paquets de cette capture (car il y en a quand meme presque 44'000...), il faut commencer par récupérer les adresses MAC des appareils concernés par l'authentification
+>
+> STA: 30:74:96:70:df:32
+>
+> AP: dc:a5:f4:60:bf:50
+>
+> Puis ajouter ces adresses aux filtres
+
 - Comparer [la capture](files/auth.pcap) au processus d’authentification donné en théorie (n’oubliez pas les captures d'écran pour illustrer vos comparaisons !). En particulier, identifier les étapes suivantes :
 	- Requête et réponse d’authentification système ouvert
+	
+	  ![](./images/slides_openAuth.png)
+	
+	  Nous avons ici la requête (0/1)
+	
+	  ![](./images/wireshark_openAuthReq.png)
+	
+	  Et en interchangeant les adresses source et de destination, nous obtenons la réponse (0/2)
+	
+	  ![](./images/wireshark_openAuthRes.png)
  	- Requête et réponse d’association (ou reassociation)
 	- Négociation de la méthode d’authentification entreprise
 	- Phase d’initiation. Arrivez-vous à voir l’identité du client ?
@@ -64,7 +82,7 @@ Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](
 	- 4-way handshake
 
 ### Répondez aux questions suivantes :
- 
+
 > **_Question :_** Quelle ou quelles méthode(s) d’authentification est/sont proposé(s) au client ?
 > 
 > **_Réponse :_** 
@@ -86,7 +104,6 @@ Dans cette première partie, vous allez analyser [une connexion WPA Entreprise](
 > - b. Le client envoie-t-il un certificat au serveur ? Pourquoi oui ou non ?
 > 
 > **_Réponse:_**
-> 
 
 ---
 
