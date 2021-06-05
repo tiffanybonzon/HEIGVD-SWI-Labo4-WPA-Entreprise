@@ -106,7 +106,7 @@ Comparer [la capture](files/auth.pcap) au processus d’authentification donné 
 
   ![](./images/slides_hellos.png)
 
-  Le client commence avec son message `Client Hello` dans le quel il indique, entre autres, la version TLS utilisée, les cipher suites et méthodes de compression qu'il supporte, son nonce et sa session ID. Ici le client indique qu'il supporte également la version TLS 1.2
+  Le client commence avec son message `Client Hello` dans le quel il indique, entre autres, la version TLS utilisée, les cipher suites et méthodes de compression qu'il supporte, son nonce et sa session ID. Ici le client indique qu'il supporte également la version TLS 1.2 qui ne sera pas utilisée.
 
   ![](./images/wireshark_tlsClientHello.png)
 
